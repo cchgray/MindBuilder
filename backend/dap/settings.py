@@ -30,7 +30,7 @@ SECRET_KEY = config.get('MyAppSettings', 'SECRET_KEY') #"django-insecure-069=v2z
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
-#ALLOWED_HOSTS = ['3.17.73.203',]
+#ALLOWED_HOSTS = ['3.17.73.203','themindbuilder.org', 'www.themindbuilder.org']
 
 # Application definition
 
@@ -128,9 +128,7 @@ DATABASES = {
 # }
 
 
-#EMAIL
- # cchgray2@gmail.com
- # kpzbzumbxvwaekti
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

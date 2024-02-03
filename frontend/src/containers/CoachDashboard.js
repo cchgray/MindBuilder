@@ -55,7 +55,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
             <div className="mt-4">
                 <h5>Athletes</h5>
                 {usersByCoach.length > 0 ? (
-                    <ul className="list-group">
+                    <ul className="list-group" style={{ maxHeight: '250px', overflowY: 'auto' }}>
                         {usersByCoach.map((assignedUser) => (
                             <li
                                 key={assignedUser.id}
@@ -82,7 +82,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                 <div className="mt-4">
                 <h5>Groups Assigned to Coach</h5>
                 {Array.isArray(groupsAssignedToCoach) && groupsAssignedToCoach.length > 0 ? (
-                    <ul className="list-group">
+                    <ul className="list-group" style={{ maxHeight: '250px', overflowY: 'auto' }}>
                         {groupsAssignedToCoach.map((group) => (
                             <li
                                 key={group.id}

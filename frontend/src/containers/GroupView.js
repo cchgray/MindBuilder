@@ -89,7 +89,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
       <div className="mt-4">
         <h5>Users in Group</h5>
         {usersInGroup.length > 0 ? (
-          <ul className="list-group">
+          <ul className="list-group" style={{ maxHeight: '200px', overflowY: 'auto' }}>
             {usersInGroup.map((user) => (
               <li
                 key={user.id}

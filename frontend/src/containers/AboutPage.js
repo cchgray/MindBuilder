@@ -42,8 +42,11 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
   };
 
   const handleRemoveUser = () => {
-    // Dispatch the action to remove the user
-    removeCoachAssignment(coachId, userId);
+    const isConfirmed = window.confirm('Are you sure you want to remove this user?');
+
+    if (isConfirmed) {
+      removeCoachAssignment(coachId, userId);
+    }
     setRequestSent(true);
   };
 
@@ -68,6 +71,8 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
           </ul>
           <br></br>
           <h2> Coach's Notes on {userData.first_name} {userData.last_name}</h2>
+          <br/>
+          <button className='btn btn-success' onClick={handleUpdateNotes}>Save Notes</button>
           {user.role === 'coach' && (
             <div>
               <ReactQuill
@@ -75,12 +80,15 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
                 value={editedNotes}
                 onChange={setEditedNotes}
               />
-              <button onClick={handleUpdateNotes}>Save</button>
+              
             </div>
           )}
+          <br/>
           {user.role === 'coach' && (
             <div>
-              <button onClick={handleRemoveUser}>Remove User From Athletes</button>
+              <button 
+                  className="btn btn-danger" 
+                  onClick={handleRemoveUser}>Remove User From Your Athletes</button>
             </div>
           )}
         </div>

@@ -46,7 +46,9 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
   };
 
   const handleRemoveUser = (userId) => {
-    removeUserFromGroup(groupId, userId).then(() => {
+    const isConfirmed = window.confirm('Are you sure you want to remove user from this Group?');
+    if (isConfirmed) {
+      removeUserFromGroup(groupId, userId).then(() => {
         // After successful removal, reload the list of users in the group
         loadUsersInGroup(groupId);
       })
@@ -54,6 +56,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
         // Handle any errors here, such as displaying an error message
         console.error('Error removing user from group:', error);
       });
+    }
   };
 
   const usersNotInGroup = usersByCoach.filter(
@@ -61,12 +64,15 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
   );
 
   const handleDeleteGroup = () => {
-    try{
-      deleteGroup(groupId);
-      setRequestSent(true);
-    }
-    catch(err){
-      console.log(err);
+    const isConfirmed = window.confirm('Are you sure you want to delete this group? This action cannot be undone. All events and users in the group will be removed.');
+    if (isConfirmed) {
+      try{
+        deleteGroup(groupId);
+        setRequestSent(true);
+      }
+      catch(err){
+        console.log(err);
+      }
     }
   };
 
@@ -140,7 +146,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
     onClick={handleDeleteGroup}
     className="btn btn-danger mt-3"
   >
-    Remove Users, Delete Events, and Delete Group
+    Delete Group
   </button>
 
 

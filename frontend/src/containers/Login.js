@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions/auth';
 
-const Login = ({ login, isAuthenticated, userRole }) => {
+const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '' 
@@ -19,25 +19,18 @@ const Login = ({ login, isAuthenticated, userRole }) => {
         login(email, password);
     };
 
-    // const continueWithGoogle = async () => {
-    //     try {
-    //         const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=${process.env.REACT_APP_API_URL}/google`)
+        // Render error message if login fails
+    const renderError = () => {
+        if (failedLogin) {
+            return (
+                <div className="alert alert-danger" role="alert">
+                    Login failed. Please check your credentials and try again.
+                </div>
+            );
+        }
+        return null;
+    };
 
-    //         window.location.replace(res.data.authorization_url);
-    //     } catch (err) {
-
-    //     }
-    // };
-
-    // const continueWithFacebook = async () => {
-    //     try {
-    //         const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`)
-
-    //         window.location.replace(res.data.authorization_url);
-    //     } catch (err) {
-
-    //     }
-    // };
 
     if (isAuthenticated) {
         if (userRole === 'player'){
@@ -51,6 +44,7 @@ const Login = ({ login, isAuthenticated, userRole }) => {
     return (
         <div className='container mt-5'>
             <h1>Sign In</h1>
+            {renderError()}
             <p>Sign into your Account</p>
             <form onSubmit={e => onSubmit(e)}>
                 <div className='form-group'>
@@ -97,7 +91,8 @@ const Login = ({ login, isAuthenticated, userRole }) => {
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
-    userRole: state.auth.user ? state.auth.user.role : null
+    userRole: state.auth.user ? state.auth.user.role : null,
+    failedLogin: state.auth.failedLogin
 });
 
 export default connect(mapStateToProps, { login })(Login);

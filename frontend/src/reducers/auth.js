@@ -62,6 +62,7 @@ const initialState = {
     groupInfo: null,
     userEventStatuses: [], 
     coachNotesOnUser: null,
+    failedLogin: false,
 };
 
 export default function(state = initialState, action) {
@@ -247,7 +248,8 @@ export default function(state = initialState, action) {
         case USER_LOADED_SUCCESS:
             return {
                 ...state,
-                user: payload
+                user: payload,
+                failedLogin: false
             }
         case AUTHENTICATED_FAIL:
             return {
@@ -262,6 +264,13 @@ export default function(state = initialState, action) {
         case GOOGLE_AUTH_FAIL:
         case FACEBOOK_AUTH_FAIL:
         case LOGIN_FAIL:
+            return {
+                ...state,
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                failedLogin: true
+            }
         case SIGNUP_FAIL:
         case LOGOUT:
             localStorage.removeItem('access');

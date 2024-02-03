@@ -62,12 +62,42 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
     // Dispatch the action to add the event to the Redux store
     var response;
     if(!usersInGroup){
-      response = await addCalendarEvent(eventData, user);
+
+    response = await addCalendarEvent(eventData, user);
+    const newEvent = {
+      ...eventData,
+      start: new Date(eventData.date), // Convert date to Date object
+      end: new Date(eventData.date), // Set end time (adjust as needed)
+      allDay: true, // Set allDay to true for full-day events
+    };
+
+    setCalendarEvents([...calendarEvents, newEvent]);
+
+    const newUserEventStatus = {
+      user: user.id,
+      event: response.id, // Use the ID of the newly created CalendarEvent
+      complete: false, // Adjust this value as needed
+    };
+
+    // Dispatch the action to add the UserEventStatus
+    addUserEventStatus(newUserEventStatus);
+
+    // Clear the eventData state to reset the form
+    addEventData({
+      date: '',
+      description: '',
+      comments: '',
+      title: '',
+      coach: null,
+      group: group,
+      user: user,
+      type: '', 
+    });
+  
+      closeAddEventModal();
     }
     else{
       response = await addGroupCalendarEvent(eventData, user, usersInGroup);
-    }
-
       const newEvent = {
         ...eventData,
         start: new Date(eventData.date), // Convert date to Date object
@@ -76,15 +106,6 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
       };
   
       setCalendarEvents([...calendarEvents, newEvent]);
-
-      const newUserEventStatus = {
-        user: user.id,
-        event: response.id, // Use the ID of the newly created CalendarEvent
-        complete: false, // Adjust this value as needed
-      };
-  
-      // Dispatch the action to add the UserEventStatus
-      addUserEventStatus(newUserEventStatus);
   
       // Clear the eventData state to reset the form
       addEventData({
@@ -99,7 +120,8 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
       });
   
       closeAddEventModal();
-    
+    }
+
   };
 
   const handleEventClick = async (event) => {
@@ -108,17 +130,31 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
     try {
       // Fetch UserEventStatus for the selected event and user
       const response = await api.get(
-        `/calendarevents/usereventstatuses/?event=${event.id}&user=${user.id}`,
+        `/calendarevents/usereventstatuses/?event=${event.id}`,
         {
           headers: {
             'Authorization': `JWT ${localStorage.getItem('access')}`,
           },
         }
       );
-
-      if (response.data.length > 0) {
-        setSelectedEventStatus(response.data[0]);
-      } else {
+      if (response.data.length >= 1) {
+        if(readOnly){
+          const filteredData = response.data.filter(item => {
+            return item.user === user.id;
+          });
+          setSelectedEventStatus(filteredData[0]);
+        }
+        else{
+          console.log(response.data);
+          if(group){
+            setSelectedEventStatus(response.data);
+          }
+          else{
+          setSelectedEventStatus(response.data[0]);
+          }
+        }
+      }
+      else {
         setSelectedEventStatus(null);
       }
 
@@ -241,21 +277,56 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
             <div className="event-details">
               <h3>{selectedEvent.title}</h3>
               <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="completeCheckbox"
-                  checked={selectedEventStatus ? selectedEventStatus.complete : false}
-                  onChange={(e) =>
-                    setSelectedEventStatus({
-                      ...selectedEventStatus,
-                      complete: e.target.checked,
-                    })
-                  }
-                />
-                <label className="form-check-label" htmlFor="completeCheckbox">
-                  Complete
-                </label>
+                  {readOnly ? (
+                      // Render checkbox for read-only false
+                      <div>
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="completeCheckbox"
+                            checked={selectedEventStatus ? selectedEventStatus.complete : false}
+                            onChange={(e) =>
+                                setSelectedEventStatus({
+                                    ...selectedEventStatus,
+                                    complete: e.target.checked,
+                                })
+                            }
+                        />
+                        <label className="form-check-label" htmlFor="completeCheckbox">
+                            Complete
+                        </label>
+                      </div>
+                  ) : (
+                    <div>
+                      {selectedEvent.group === null ? (
+                        // Display individual completion status
+                        selectedEventStatus && selectedEventStatus.complete
+                          ? "Event completed"
+                          : "Not completed yet"
+                      ) : (
+                        // Display group completion information
+                        selectedEventStatus ? (
+                          <React.Fragment>
+                                <ul>
+                                  {selectedEventStatus.map((status) => {
+                                    // Find the user object with matching ID
+                                    const matchedUser = usersInGroup.find((user) => user.id === status.user);
+
+                                    return (
+                                      <li key={status.id}>
+                                        <p>{`${matchedUser ? matchedUser.first_name + ' ' + matchedUser.last_name : 'Error finding name'}`}: {status.complete ? "Event completed" : "Not completed yet"}</p>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                          </React.Fragment>
+                        ) : (
+                          // Handle case when selectedEventStatus is not available
+                          <p>Completion status not available</p>
+                        )
+                      )}
+                    </div>
+                  )}
               </div>
               <div className="form-group">
                 <label htmlFor="descriptionTextarea">Description:</label>

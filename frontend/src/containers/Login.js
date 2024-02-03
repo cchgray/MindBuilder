@@ -24,7 +24,7 @@ const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
         if (failedLogin) {
             return (
                 <div className="alert alert-danger" role="alert">
-                    Login failed. Please check your credentials and try again.
+                    Login failed or account has not been activated. Please check your credentials and try again.
                 </div>
             );
         }

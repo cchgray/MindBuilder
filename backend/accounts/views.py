@@ -3,10 +3,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveAPIView
+from django.http import JsonResponse
 
 from .models import UserAccount, CoachAssignment, CoachRequest, TrainingGroup
 
-from .serializers import UserSerializer, CoachRequestSerializer, TrainingGroupSerializer
+from .serializers import UserSerializer, CoachRequestSerializer, TrainingGroupSerializer, CoachAssignmentSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -229,3 +230,77 @@ def get_users_by_coach(request, coach_id):
     users = UserAccount.objects.filter(coach_assignments__coach=coach)
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
+    # serialized_users = UserSerializer(users, many=True)
+
+    # response_data = {
+    #     'users': serialized_users.data,
+    # }
+
+    # return Response(response_data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_coach_notes(request, coach_id, user_id):
+    try:
+        coach = UserAccount.objects.get(id=coach_id, role='coach')
+        user = UserAccount.objects.get(id=user_id)
+    except UserAccount.DoesNotExist:
+        return Response({'error': 'User or coach not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Ensure that the coach is assigned to the specified user
+    if not CoachAssignment.objects.filter(coach=coach, user=user).exists():
+        return Response({'error': 'Coach is not assigned to this user'}, status=status.HTTP_403_FORBIDDEN)
+
+    # Retrieve and serialize coach notes for the specified user
+    assignment = CoachAssignment.objects.get(coach=coach, user=user)
+    serialized_assignment = CoachAssignmentSerializer(assignment)
+
+    # Assuming 'notes' is the key for the notes field in your serialized data
+    notes_data = serialized_assignment.data.get('notes', None)
+
+    if notes_data is not None:
+        return Response({'notes': notes_data}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Notes not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_coach_notes(request, coach_id, user_id):
+    try:
+        coach = UserAccount.objects.get(id=coach_id, role='coach')
+        user = UserAccount.objects.get(id=user_id)
+    except UserAccount.DoesNotExist:
+        return Response({'error': 'User or coach not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Ensure that the coach is assigned to the specified user
+    if not CoachAssignment.objects.filter(coach=coach, user=user).exists():
+        return Response({'error': 'Coach is not assigned to this user'}, status=status.HTTP_403_FORBIDDEN)
+
+    # Retrieve and update coach notes for the specified user
+    assignment = CoachAssignment.objects.get(coach=coach, user=user)
+    assignment.notes = request.data.get('notes', '')
+    assignment.save()
+
+    return Response({'success': 'Notes updated successfully'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def remove_user_assignment(request, coach_id, user_id):
+    try:
+        coach_assignment = CoachAssignment.objects.get(coach_id=coach_id, user_id=user_id)
+
+        # Remove user from associated training groups
+        training_groups = TrainingGroup.objects.filter(coach_id=coach_id, users__id=user_id)
+        for group in training_groups:
+            group.users.remove(user_id)
+
+        # Delete the coach assignment
+        coach_assignment.delete()
+
+        return JsonResponse({'userId': user_id}, status=status.HTTP_200_OK)
+    except CoachAssignment.DoesNotExist:
+        return Response({'error': 'Coach assignment not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

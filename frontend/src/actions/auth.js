@@ -43,12 +43,93 @@ import {
     DELETE_USER_EVENT_STATUS_SUCCESS,
     ADD_USER_EVENT_STATUS_SUCCESS,
     LOAD_GROUPS_ASSIGNED_TO_USER_SUCCESS,
+    FETCH_NOTES_SUCCESS,
+    FETCH_NOTES_FAILURE,
+    UPDATE_NOTES_SUCCESS,
+    UPDATE_NOTES_FAILURE,
+    REMOVE_COACH_ASSIGNMENT_SUCCESS,
+    REMOVE_COACH_ASSIGNMENT_FAILURE,
+
 } from './types';
 
+export const removeCoachAssignment = (coachId, userId) => async (dispatch) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `JWT ${localStorage.getItem('access')}`,
+          'Accept': 'application/json',
+        },
+      };
+      const response = await api.post(
+        `/accounts/remove-coach-assignment/${coachId}/${userId}/`, // Replace with your actual API endpoint
+        null,
+        config
+      );
+      console.log(response);
+  
+      dispatch({ type: REMOVE_COACH_ASSIGNMENT_SUCCESS, payload: response.data });
+    } catch (error) {
+      dispatch({ type: REMOVE_COACH_ASSIGNMENT_FAILURE, payload: error });
+    }
+  };
+
+export const updateNotes = (coachId, userId, editedNotes) => {
+    return async (dispatch) => {
+        try {
+            const response = await api.put(
+                `accounts/update-coach-notes/${coachId}/${userId}/`,
+                { notes: editedNotes },
+                {
+                    headers: {
+                        'Authorization': `JWT ${localStorage.getItem('access')}`,
+                    },
+                }
+            );
+            const updatedNotes = response.data;
+
+            // Dispatch action with updated notes
+            dispatch({
+                type: UPDATE_NOTES_SUCCESS,
+                payload: updatedNotes,
+            });
+        } catch (error) {
+            console.error('Error updating notes:', error);
+
+            dispatch({
+                type: UPDATE_NOTES_FAILURE,
+                payload: error,
+            });
+
+            throw error;
+        }
+    };
+};
 
 // Action Creators
+export const fetchNotes = (coachId, athleteId) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${localStorage.getItem('access')}`,
+        'Accept': 'application/json',
+      },
+    };
 
-  
+    const response = await api.get(
+      `/accounts/coach-notes/${coachId}/${athleteId}/`, // Replace with your actual API endpoint
+      config
+    );
+
+    dispatch({ type: FETCH_NOTES_SUCCESS, payload: response.data });
+  } catch (error) {
+    dispatch({ type: FETCH_NOTES_FAILURE, payload: error });
+  }
+};
+
+
+
   // Async Action: Fetch Group Information
   export const fetchGroupInfo = (groupId) => async (dispatch) => {
   

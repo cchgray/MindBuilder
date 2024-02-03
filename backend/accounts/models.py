@@ -73,6 +73,7 @@ class CoachAssignment(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coach_assignments')
     coach = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='assigned_players')
     request = models.OneToOneField(CoachRequest, on_delete=models.SET_NULL, null=True, blank=True)
+    notes = models.TextField(blank=True) 
 
     def __str__(self):
         return f"{self.coach.get_full_name()}'s Assigned Player: {self.user.get_full_name()}"
@@ -85,3 +86,4 @@ class TrainingGroup(models.Model):
 
     def __str__(self):
         return self.name 
+    

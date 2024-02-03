@@ -30,7 +30,7 @@ class CoachAssignmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CoachAssignment
-        fields = ('user', 'coach')
+        fields = ('user', 'coach', 'notes')
 
 class TrainingGroupSerializer(serializers.ModelSerializer):
     class Meta:

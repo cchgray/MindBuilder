@@ -53,7 +53,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
         <div className="row">
           <div className="col-md-4">
             <div className="mt-4">
-                <h5>Users Assigned to Coach</h5>
+                <h5>Athletes</h5>
                 {usersByCoach.length > 0 ? (
                     <ul className="list-group">
                         {usersByCoach.map((assignedUser) => (
@@ -68,6 +68,9 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                                 >
                                     Go To Calendar
                                 </button>
+                                <Link to={`/about/${assignedUser.id}`} className="btn btn-secondary">
+                                    View Profile
+                                </Link>
                             </li>
                         ))}
                     </ul>

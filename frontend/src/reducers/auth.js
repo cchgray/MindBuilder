@@ -41,6 +41,12 @@ import {
     DELETE_USER_EVENT_STATUS_SUCCESS,
     ADD_USER_EVENT_STATUS_SUCCESS,
     LOAD_GROUPS_ASSIGNED_TO_USER_SUCCESS,
+    FETCH_NOTES_SUCCESS,
+    FETCH_NOTES_FAILURE,
+    UPDATE_NOTES_SUCCESS,
+    UPDATE_NOTES_FAILURE,
+    REMOVE_COACH_ASSIGNMENT_SUCCESS,
+    REMOVE_COACH_ASSIGNMENT_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -55,6 +61,7 @@ const initialState = {
     usersInGroup: [],
     groupInfo: null,
     userEventStatuses: [], 
+    coachNotesOnUser: null,
 };
 
 export default function(state = initialState, action) {
@@ -63,6 +70,36 @@ export default function(state = initialState, action) {
     // ...other reducer cases
  
     switch(type) {
+        case REMOVE_COACH_ASSIGNMENT_SUCCESS:
+      return {
+        ...state,
+        usersByCoach: state.usersByCoach.filter(user => user.id !== action.payload.userId),
+      };
+    case REMOVE_COACH_ASSIGNMENT_FAILURE:
+      return {
+        ...state,
+        usersByCoach: null,
+      };
+    case UPDATE_NOTES_SUCCESS:
+        return {
+            ...state,
+            coschnotesOnUser: action.payload,
+        };
+    case UPDATE_NOTES_FAILURE:
+        return {
+            ...state,
+            coachNotesOnUser: null,
+        };
+    case FETCH_NOTES_SUCCESS:
+        return {
+            ...state,
+            coachNotesOnUser: action.payload,
+    };
+    case FETCH_NOTES_FAILURE:
+        return {
+            ...state,
+            coachNotesOnUser: null,
+    };
     case FETCH_GROUP_INFO_SUCCESS:
       return {
         ...state,

@@ -114,6 +114,9 @@ DATABASES = {
         'PASSWORD': config.get('MyAppSettings', 'DB_PASSWORD'),
         'HOST': 'mind-gym-db.cezxhyunygcq.us-east-2.rds.amazonaws.com',  # Or the IP address of your MySQL server
         'PORT': '3306',       # Default MySQL port
+        # 'OPTIONS': {
+        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        # },
     }
 }
 # DATABASES = {

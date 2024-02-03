@@ -16,11 +16,8 @@ const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEvents
   }, [load_user]);
 
   useEffect(() => {
-    if (user) {
-        if (groupId) {
+    if (user && groupId) {
           fetchGroupInfo(groupId);
-        }
-        
     }
     }, [user, groupId, fetchGroupInfo]);
 

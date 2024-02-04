@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getUsersByCoach, loadCalendarEventsByUser, clearCalendarEvents, getGroupsAssignedToCoach, createGroup } from '../actions/auth';
+import { getUsersByCoach, loadCalendarEventsByUser, clearCalendarEvents, getGroupsAssignedToCoach, createGroup  } from '../actions/auth';
 import MyCalendar from '../components/Calendar'; // Import your Calendar component
 import { Link } from 'react-router-dom';
+import api from '../actions/api-config';
 
 const CoachDashboard = ({ coachId, user, usersByCoach, 
     getUsersByCoach, loadCalendarEventsByUser, calendarEvents, clearCalendarEvents, 
     groupsAssignedToCoach, getGroupsAssignedToCoach, createGroup  }) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [groupName, setGroupName] = useState('');
+    const [inviteEmail, setInviteEmail] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -47,6 +49,35 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
         setSelectedUser(e);
     };
 
+    const handleInviteSubmit = async (e) => {
+        e.preventDefault();
+
+        if (inviteEmail) {
+            console.log('Inviting user:', inviteEmail);
+            try {
+                
+                const {id} = user;
+                // Update the API endpoint and data based on your backend implementation
+                const res = await api.post(
+                    `/accounts/create-invitation/`, // Update with your actual endpoint
+                    { id, inviteEmail}, // Pass the invitationData as the request body
+                    {
+                        headers: {
+                            'Authorization': `JWT ${localStorage.getItem('access')}`,
+                        },
+                    }
+                );
+                console.log(res.data);
+        
+                // Use res.data as the payload
+                
+            } catch (error) {// Dispatch a failure action if there's an error
+                console.error('Error inviting user:', error);
+            }
+            setInviteEmail(''); // Clear the invite email input
+        }
+    };
+
     return (
         <div className="container">
             <h2 className="mt-4">{user.first_name} {user.last_name}'s Dashboard</h2>
@@ -80,7 +111,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
             </div></div>
             <div className="col-md-4">
                 <div className="mt-4">
-                <h5>Groups Assigned to Coach</h5>
+                <h5>Groups</h5>
                 {Array.isArray(groupsAssignedToCoach) && groupsAssignedToCoach.length > 0 ? (
                     <ul className="list-group" style={{ maxHeight: '250px', overflowY: 'auto' }}>
                         {groupsAssignedToCoach.map((group) => (
@@ -114,7 +145,22 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                         Create Group
                     </button>
                 </form>
-            </div></div></div>
+            </div><div className="mt-4">
+                        <h5>Invite User</h5>
+                        <form onSubmit={handleInviteSubmit} className="form-inline">
+                            <input
+                                type="email"
+                                className="form-control mr-2"
+                                placeholder="User's Email"
+                                value={inviteEmail}
+                                onChange={(e) => setInviteEmail(e.target.value)}
+                            />
+                            <button type="submit" className="btn btn-primary">
+                                Invite
+                            </button>
+                        </form></div></div>
+            
+            </div>
             {selectedUser && (
                 <div className="mt-4">
                     <h3>Calendar for {selectedUser.first_name} {selectedUser.last_name}</h3>

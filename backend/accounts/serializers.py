@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import CoachAssignment, CoachRequest, TrainingGroup, UserAccount
+from .models import CoachAssignment, CoachRequest, TrainingGroup, UserAccount, Invitation
 User = get_user_model()
 
 class CoachRequestSerializer(serializers.ModelSerializer):
@@ -43,3 +43,9 @@ class TrainingGroupSerializer(serializers.ModelSerializer):
         many=True,
         required=False  # Make the field optional
     )
+    
+    
+class InvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invitation
+        fields = ('id', 'coach', 'receiver_email', 'created_at')

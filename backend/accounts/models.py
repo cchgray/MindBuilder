@@ -52,7 +52,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'role', 'about']
 
     def get_full_name(self):
-        return self.first_name
+        return f'{self.first_name} {self.last_name}'
 
     def get_short_name(self):
         return self.first_name
@@ -87,3 +87,18 @@ class TrainingGroup(models.Model):
     def __str__(self):
         return self.name 
     
+class Invitation(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('declined', 'Declined'),
+    ]
+
+    receiver_email = models.EmailField()
+    coach = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coached_invitations')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Invitation from {self.sender.get_full_name()} to {self.receiver_email} by {self.coach.get_full_name()}"
+

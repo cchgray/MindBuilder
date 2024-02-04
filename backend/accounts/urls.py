@@ -12,6 +12,7 @@ from .views import (get_users,
                     get_coach_notes,
                     update_coach_notes,
                     remove_user_assignment,
+                    create_invitation,
 )
 urlpatterns = [
     path('users/', get_users, name='get_users'),
@@ -37,6 +38,7 @@ urlpatterns = [
     path('coach-notes/<int:coach_id>/<int:user_id>/', get_coach_notes, name='get-coach-notes'),
     path('update-coach-notes/<int:coach_id>/<int:user_id>/', update_coach_notes, name='update_coach_notes'),
     path('remove-coach-assignment/<int:coach_id>/<int:user_id>/', remove_user_assignment, name='remove_user_assignment'),
+    path('create-invitation/', create_invitation, name='create_invitation'),
 
 
 ]

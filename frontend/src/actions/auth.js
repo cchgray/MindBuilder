@@ -15,10 +15,6 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    GOOGLE_AUTH_SUCCESS,
-    GOOGLE_AUTH_FAIL,
-    FACEBOOK_AUTH_SUCCESS,
-    FACEBOOK_AUTH_FAIL,
     LOGOUT,
     LOAD_CALENDAR_EVENTS_SUCCESS,
     UPDATE_CALENDAR_EVENT_SUCCESS,
@@ -49,8 +45,38 @@ import {
     UPDATE_NOTES_FAILURE,
     REMOVE_COACH_ASSIGNMENT_SUCCESS,
     REMOVE_COACH_ASSIGNMENT_FAILURE,
+    INVITE_USER_SUCCESS,
+    INVITE_USER_FAILURE
 
 } from './types';
+
+
+export const inviteUser = (user, inviteEmail) => async (dispatch) => {
+    console.log(user);
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json',
+            },
+        };
+        // Update the API endpoint and data based on your backend implementation
+        const res = await api.post(
+            `/accounts/create-invitation/`, // Update with your actual endpoint
+            user,
+            inviteEmail, // Pass the invitationData as the request body
+            config
+        );
+        console.log(res.data);
+
+        dispatch({ type: INVITE_USER_SUCCESS, payload: res.data }); // Use res.data as the payload
+        return res.data;
+    } catch (error) {
+        dispatch({ type: INVITE_USER_FAILURE }); // Dispatch a failure action if there's an error
+        // Handle error
+    }
+};
 
 export const removeCoachAssignment = (coachId, userId) => async (dispatch) => {
     try {
@@ -567,69 +593,6 @@ export const load_user = () => async dispatch => {
     }
 };
 
-export const googleAuthenticate = (state, code) => async dispatch => {
-    if (state && code && !localStorage.getItem('access')) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        };
-
-        const details = {
-            'state': state,
-            'code': code
-        };
-
-        const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-
-        try {
-            const res = await api.post(`/auth/o/google-oauth2/?${formBody}`, config);
-
-            dispatch({
-                type: GOOGLE_AUTH_SUCCESS,
-                payload: res.data
-            });
-
-            dispatch(load_user());
-        } catch (err) {
-            dispatch({
-                type: GOOGLE_AUTH_FAIL
-            });
-        }
-    }
-};
-
-export const facebookAuthenticate = (state, code) => async dispatch => {
-    if (state && code && !localStorage.getItem('access')) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        };
-
-        const details = {
-            'state': state,
-            'code': code
-        };
-
-        const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-
-        try {
-            const res = await api.post(`/auth/o/facebook/?${formBody}`, config);
-
-            dispatch({
-                type: FACEBOOK_AUTH_SUCCESS,
-                payload: res.data
-            });
-
-            dispatch(load_user());
-        } catch (err) {
-            dispatch({
-                type: FACEBOOK_AUTH_FAIL
-            });
-        }
-    }
-};
 
 export const checkAuthenticated = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -703,7 +666,7 @@ export const signup = (first_name, last_name, email, role, about, password, re_p
 
     try {
         const res = await api.post(`/auth/users/`, body, config);
-
+        console.log(res.data.id);
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data

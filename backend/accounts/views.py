@@ -4,10 +4,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveAPIView
 from django.http import JsonResponse
+from .utils import send_invitation_email 
 
 from .models import UserAccount, CoachAssignment, CoachRequest, TrainingGroup
 
-from .serializers import UserSerializer, CoachRequestSerializer, TrainingGroupSerializer, CoachAssignmentSerializer
+from .serializers import UserSerializer, CoachRequestSerializer, TrainingGroupSerializer, CoachAssignmentSerializer, InvitationSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -171,7 +172,7 @@ def get_username_by_id(request, user_id):
 
     try:
         user = UserAccount.objects.get(id=user_id)
-        username = user.first_name + ' ' + user.last_name
+        username = f'{user.first_name} {user.last_name}'
         print(username)
         return Response({username})
     except UserAccount.DoesNotExist:
@@ -304,3 +305,32 @@ def remove_user_assignment(request, coach_id, user_id):
         return Response({'error': 'Coach assignment not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_invitation(request):
+    if request.method != 'POST':
+        return Response({'status': 'error', 'message': 'Invalid request method'})
+    coach_id = request.user.id  # The logged-in coach's user ID
+    receiver_email = request.data.get('inviteEmail')
+
+    # Check if the receiver email is not already associated with a user
+    if not UserAccount.objects.filter(email=receiver_email).exists():
+        # Create the invitation
+        invitation_data = {'coach': coach_id, 'receiver_email': receiver_email}
+        serializer = InvitationSerializer(data=invitation_data)
+
+        coachName = UserAccount.objects.get(id=coach_id).get_full_name()
+        
+        if serializer.is_valid():
+            serializer.save()
+            send_invitation_email(receiver_email, coachName)
+
+            # Add logic to send an email with the invitation link (not implemented here)
+
+            return Response({'status': 'success', 'message': 'Invitation created successfully'})
+        else:
+            return Response({'status': 'error', 'message': 'Invalid invitation data'})
+
+    return Response({'status': 'error', 'message': 'Receiver email is already associated with a user'})

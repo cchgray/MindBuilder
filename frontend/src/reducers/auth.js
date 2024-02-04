@@ -47,6 +47,9 @@ import {
     UPDATE_NOTES_FAILURE,
     REMOVE_COACH_ASSIGNMENT_SUCCESS,
     REMOVE_COACH_ASSIGNMENT_FAILURE,
+    INVITE_USER_SUCCESS,
+    INVITE_USER_FAILURE,
+
 } from '../actions/types';
 
 const initialState = {
@@ -71,7 +74,9 @@ export default function(state = initialState, action) {
     // ...other reducer cases
  
     switch(type) {
-        case REMOVE_COACH_ASSIGNMENT_SUCCESS:
+    case INVITE_USER_SUCCESS:
+    case INVITE_USER_FAILURE:
+    case REMOVE_COACH_ASSIGNMENT_SUCCESS:
       return {
         ...state,
         usersByCoach: state.usersByCoach.filter(user => user.id !== action.payload.userId),

@@ -53,12 +53,12 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
         e.preventDefault();
 
         if (inviteEmail) {
-            console.log('Inviting user:', inviteEmail);
+            //console.log('Inviting user:', inviteEmail);
             try {
                 
                 const {id} = user;
                 // Update the API endpoint and data based on your backend implementation
-                const res = await api.post(
+                await api.post(
                     `/accounts/create-invitation/`, // Update with your actual endpoint
                     { id, inviteEmail}, // Pass the invitationData as the request body
                     {
@@ -67,7 +67,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                         },
                     }
                 );
-                console.log(res.data);
+                //console.log(res.data);
         
                 // Use res.data as the payload
                 
@@ -97,7 +97,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                                     className="btn btn-primary"
                                     onClick={() => handleUserCalendar(assignedUser)}
                                 >
-                                    Go To Calendar
+                                    View Calendar
                                 </button>
                                 <Link to={`/about/${assignedUser.id}`} className="btn btn-secondary">
                                     View Profile

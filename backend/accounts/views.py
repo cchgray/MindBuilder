@@ -6,7 +6,7 @@ from rest_framework.generics import RetrieveAPIView
 from django.http import JsonResponse
 from .utils import send_invitation_email 
 
-from .models import UserAccount, CoachAssignment, CoachRequest, TrainingGroup
+from .models import UserAccount, CoachAssignment, CoachRequest, TrainingGroup, Invitation
 
 from .serializers import UserSerializer, CoachRequestSerializer, TrainingGroupSerializer, CoachAssignmentSerializer, InvitationSerializer
 
@@ -334,3 +334,41 @@ def create_invitation(request):
             return Response({'status': 'error', 'message': 'Invalid invitation data'})
 
     return Response({'status': 'error', 'message': 'Receiver email is already associated with a user'})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def check_invitation(request):
+    if request.method != 'POST':
+        return Response({'status': 'error', 'message': 'Invalid request method'})
+    
+    receiver_email = request.data.get('email')
+
+    # Check if there is a pending invitation for the given email
+    try:
+        invitation = Invitation.objects.get(receiver_email=receiver_email, status='pending')
+        coach_id = invitation.coach.id
+        user_id = UserAccount.objects.get(email=receiver_email).id
+        return Response({'status': 'success', 'coachId': coach_id, 'userId': user_id})
+    except Invitation.DoesNotExist:
+        return Response({'status': 'success', 'coachId': None, 'userId': None})
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def accept_invitation(request):
+    if request.method != 'POST':
+        return Response({'status': 'error', 'message': 'Invalid request method'})
+    
+    coach_id = request.data.get('coach_id')
+    user_id = request.data.get('user_id')
+
+    # Check if the invitation exists and is pending UserAccount.objects.get(id=coach_id).get_full_name()
+    try:
+        invitation = Invitation.objects.get(coach_id=coach_id, receiver_email=UserAccount.objects.get(id=user_id).email, status='pending')
+        invitation.status = 'accepted'
+        invitation.save()
+
+        return Response({'status': 'success', 'message': 'Invitation accepted successfully'})
+    except Invitation.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Invitation not found or not pending'})

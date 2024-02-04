@@ -102,3 +102,4 @@ class Invitation(models.Model):
     def __str__(self):
         return f"Invitation from {self.sender.get_full_name()} to {self.receiver_email} by {self.coach.get_full_name()}"
 
+ 

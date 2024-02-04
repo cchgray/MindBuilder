@@ -13,6 +13,8 @@ from .views import (get_users,
                     update_coach_notes,
                     remove_user_assignment,
                     create_invitation,
+                    check_invitation,
+                    accept_invitation
 )
 urlpatterns = [
     path('users/', get_users, name='get_users'),
@@ -39,6 +41,8 @@ urlpatterns = [
     path('update-coach-notes/<int:coach_id>/<int:user_id>/', update_coach_notes, name='update_coach_notes'),
     path('remove-coach-assignment/<int:coach_id>/<int:user_id>/', remove_user_assignment, name='remove_user_assignment'),
     path('create-invitation/', create_invitation, name='create_invitation'),
+    path('check-invitation/', check_invitation, name='check_invitation'),
+    path('accept-invitation/', accept_invitation, name='accept_invitation'),
 
 
 ]

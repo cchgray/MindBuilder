@@ -28,12 +28,6 @@ const Signup = ({ signup, isAuthenticated }) => {
         if (password === re_password) {
             await signup(first_name, last_name, email,  role, about, password, re_password);
 
-            
-            //need an api call to reference the table of coach invite links
-            //pass the email as a parameter to the api call, return the coach id if found and the user id
-            //if not found, return null and proceed
-            //if found assign the user id to the coach id using api call found in the explore.js file
-
             setRegistrationMessage('Please activate your account with the email from themindgymusers@gmail.com. Check your spam folder if you do not see the email in your inbox.');
             setTimeout(() => {
                 setAccountCreated(true);

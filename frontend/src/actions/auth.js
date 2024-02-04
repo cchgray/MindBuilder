@@ -51,6 +51,28 @@ import {
 } from './types';
 
 
+export const invitationCheck = async (email) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json',
+            },
+        };
+        
+        // Update the API endpoint and data based on your backend implementation
+        const res = await api.post(
+            `/accounts/check-invitation/`, // Update with your actual endpoint for checking invitation
+            { email }, // Pass the email as the request body
+            config
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const inviteUser = (user, inviteEmail) => async (dispatch) => {
     console.log(user);
     try {
@@ -666,7 +688,7 @@ export const signup = (first_name, last_name, email, role, about, password, re_p
 
     try {
         const res = await api.post(`/auth/users/`, body, config);
-        console.log(res.data.id);
+        //console.log(res.data.id);
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data

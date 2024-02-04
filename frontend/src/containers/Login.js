@@ -17,6 +17,8 @@ const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
         e.preventDefault();
 
         login(email, password);
+
+        
     };
 
         // Render error message if login fails

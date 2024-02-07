@@ -38,11 +38,7 @@ const Navbar = ({ logout, isAuthenticated, userRole }) => {
             <li className='nav-item'>
                 <a className='nav-link' href='/' onClick={logout_user}>Logout</a>
             </li>
-            {userRole === 'coach' && (
-                <li className='nav-item'>
-                    <Link className={`nav-link ${location.pathname === '/explore' ? 'active' : ''}`} to='/explore'>Find Users</Link>
-                </li>
-            )}
+            
         </Fragment>
     );
 

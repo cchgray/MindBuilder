@@ -76,6 +76,7 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
           {user.role === 'coach' && (
             <div>
               <ReactQuill
+                style={{ maxHeight: '300px', minHeight: '100px', overflowY: 'auto' }}
                 theme="snow"
                 value={editedNotes}
                 onChange={setEditedNotes}
@@ -86,7 +87,7 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
           <br/>
           {user.role === 'coach' && (
             <div>
-              <button 
+              <button
                   className="btn btn-danger" 
                   onClick={handleRemoveUser}>Remove User From Your Athletes</button>
             </div>

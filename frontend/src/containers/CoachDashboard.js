@@ -163,7 +163,6 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
             </div>
             {selectedUser && (
                 <div className="mt-4">
-                    {/* <h3>Calendar for {selectedUser.first_name} {selectedUser.last_name}</h3> */}
                     <MyCalendar key={JSON.stringify(calendarEvents)} events={calendarEvents} user={selectedUser} />
                 </div>
             )}

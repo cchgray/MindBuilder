@@ -111,7 +111,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
             </div></div>
             <div className="col-md-4">
                 <div className="mt-4">
-                <h5>Groups</h5>
+                <h5>Teams</h5>
                 {Array.isArray(groupsAssignedToCoach) && groupsAssignedToCoach.length > 0 ? (
                     <ul className="list-group" style={{ maxHeight: '250px', overflowY: 'auto' }}>
                         {groupsAssignedToCoach.map((group) => (
@@ -121,37 +121,37 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                             >
                                 {group.name}
                                 <Link to={`/group/${group.id}`} className="btn btn-secondary">
-                                    View Group
+                                    View Team
                                 </Link>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p>No groups assigned to this coach.</p>
+                    <p>No Teams created.</p>
                 )}
             </div></div>
             <div className="col-md-4">
             <div className="mt-4">
-                <h5>Create a New Group</h5>
+                <h5>Create a New Team</h5>
                 <form onSubmit={handleCreateGroup} className="form-inline">
                     <input
                         type="text"
                         className="form-control mr-2"
-                        placeholder="Group Name"
+                        placeholder="Team Name"
                         value={groupName}
                         onChange={(e) => setGroupName(e.target.value)}
                     />
                     <button type="submit" className="btn btn-success">
-                        Create Group
+                        Create Team
                     </button>
                 </form>
             </div><div className="mt-4">
-                        <h5>Invite User</h5>
+                        <h5>Invite Athlete</h5>
                         <form onSubmit={handleInviteSubmit} className="form-inline">
                             <input
                                 type="email"
                                 className="form-control mr-2"
-                                placeholder="User's Email"
+                                placeholder="Athlete's Email"
                                 value={inviteEmail}
                                 onChange={(e) => setInviteEmail(e.target.value)}
                             />

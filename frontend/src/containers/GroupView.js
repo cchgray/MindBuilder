@@ -87,7 +87,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
   <div className="row">
     <div className="col-md-6">
       <div className="mt-4">
-        <h5>Users in Group</h5>
+        <h5>Athletes in Team</h5>
         {usersInGroup.length > 0 ? (
           <ul className="list-group" style={{ maxHeight: '200px', overflowY: 'auto' }}>
             {usersInGroup.map((user) => (
@@ -106,13 +106,13 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
             ))}
           </ul>
         ) : (
-          <p>No users in this group.</p>
+          <p>No Athletes in this Team.</p>
         )}
       </div>
     </div>
     <div className="col-md-6">
       <div className="mt-4">
-        <h5>Add User to Group</h5>
+        <h5>Add Athlete to Team</h5>
         {groupId ? (
           <div>
             <select
@@ -131,13 +131,13 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
               onClick={handleAddUserToGroup}
               className="btn btn-success"
             >
-              Add User to Group
+              Add Athlete to Team
             </button>
             
           </div>
           
         ) : (
-          <p>Select a group to add users.</p>
+          <p>Select a Team to add Athletes.</p>
         )}
       </div>
       <div>
@@ -145,7 +145,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
               onClick={handleDeleteGroup}
               className="btn btn-danger mt-3"
             >
-              Delete Group
+              Delete Team
             </button>
             </div>
     </div>

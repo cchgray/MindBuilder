@@ -101,20 +101,20 @@ const UserProfile = ({ user, calendarEvents, load_user, loadCalendarEventsByUser
     <div className='container mt-5'>
       {/* ...other user information */}
       <div style={{ marginTop: '20px' }}>
-      <h3>Groups Assigned to User</h3>
+      <h3>Your Teams</h3>
 {Array.isArray(groupsAssignedToUser) && groupsAssignedToUser.length > 0 ? (
     <ul className="list-group">
         {groupsAssignedToUser.map((group) => (
             <li key={group.id} className="list-group-item d-flex justify-content-between align-items-center">
                 {group.name}
                 <Link to={`/group-user-view/${group.id}`} className="btn btn-secondary">
-                    View Group
+                    View Team
                 </Link>
             </li>
         ))}
     </ul>
 ) : (
-    <p>No groups assigned to this user.</p>
+    <p>No teams assigned</p>
 )}
 
 <br />

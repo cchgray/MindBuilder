@@ -50,7 +50,7 @@ const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEvents
                 />
                 </>
             ) : (
-                <p>Loading group information...</p>
+                <p>Loading team information...</p>
             )}
             </div>
 

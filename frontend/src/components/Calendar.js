@@ -258,7 +258,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
       <div className="row align-items-center">
       <div className="col-md-4 align-self-center"> {/* Adjust column size as needed */}
           <h2 className="mb-4">
-            {group ? `${groupName}`: `${user.first_name} ${user.last_name}`} Calendar
+            {group ? `${groupName}`: `${user.first_name} ${user.last_name}`}'s Calendar
           </h2>
         </div>
         <div className="col-md-4 text-center"> {/* Adjust column size as needed */}

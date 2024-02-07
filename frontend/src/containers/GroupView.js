@@ -133,27 +133,32 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
             >
               Add User to Group
             </button>
+            
           </div>
+          
         ) : (
           <p>Select a group to add users.</p>
         )}
       </div>
+      <div>
+            <button
+              onClick={handleDeleteGroup}
+              className="btn btn-danger mt-3"
+            >
+              Delete Group
+            </button>
+            </div>
     </div>
   </div>
 </div>
 </div>
-  <button
-    onClick={handleDeleteGroup}
-    className="btn btn-danger mt-3"
-  >
-    Delete Group
-  </button>
+  
 
-
+<br />
   <div style={{ marginTop: '20px' }}>
       {groupInfo ? (
           <>
-              <h2>{groupInfo.name} Calendar</h2>
+              {/* <h2>{groupInfo.name} Calendar</h2> */}
               <p>{groupInfo.about}</p>
 
               <MyCalendar 
@@ -161,6 +166,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
                   events={calendarEvents}
                   user={user}
                   group={groupId}
+                  groupName={groupInfo.name}
                   usersInGroup={usersInGroup}
               />
           </>

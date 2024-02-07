@@ -116,7 +116,10 @@ const UserProfile = ({ user, calendarEvents, load_user, loadCalendarEventsByUser
 ) : (
     <p>No groups assigned to this user.</p>
 )}
-        <h2>{user.first_name} {user.last_name}'s Calendar</h2>
+
+<br />
+<br />
+        {/* <h2>{user.first_name} {user.last_name}'s Calendar</h2> */}
         
         <MyCalendar
           key={JSON.stringify(calendarEvents)} 

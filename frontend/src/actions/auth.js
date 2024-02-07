@@ -134,6 +134,7 @@ export const updateNotes = (coachId, userId, editedNotes) => {
                     },
                 }
             );
+            console.log(response);  
             const updatedNotes = response.data;
 
             // Dispatch action with updated notes

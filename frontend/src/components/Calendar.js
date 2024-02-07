@@ -10,7 +10,7 @@ import api from '../actions/api-config';
 
 const localizer = momentLocalizer(moment);
 
-const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalendarEvent, addCalendarEvent, deleteCalendarEvent,
+const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, updateCalendarEvent, addCalendarEvent, deleteCalendarEvent,
                      updateUserEventStatus, addUserEventStatus, deleteUserEventStatus, addGroupCalendarEvent }) => {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -219,11 +219,63 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
       'Goal Setting': 'purple',
     };
 
+    
     return {
       style: {
         backgroundColor: typeColorMap[event.type],
       },
     };
+  };
+
+
+  const customToolbar = (toolbar) => {
+    const goToBack = () => {
+      toolbar.date.setMonth(toolbar.date.getMonth() - 1);
+      toolbar.onNavigate('prev');
+    };
+  
+    const goToNext = () => {
+      toolbar.date.setMonth(toolbar.date.getMonth() + 1);
+      toolbar.onNavigate('next');
+    };
+  
+    const goToCurrent = () => {
+      const now = new Date();
+      toolbar.date.setMonth(now.getMonth());
+      toolbar.date.setYear(now.getFullYear());
+      toolbar.onNavigate('current');
+    };
+  
+    const label = () => {
+      const date = moment(toolbar.date);
+      return (
+        <span><b>{date.format('MMMM')}</b><span> {date.format('YYYY')}</span></span>
+      );
+    };
+  
+    return (
+    <div className="container">
+      <div className="row align-items-center">
+      <div className="col-md-4 align-self-center"> {/* Adjust column size as needed */}
+          <h2 className="mb-4">
+            {group ? `${groupName}`: `${user.first_name} ${user.last_name}`} Calendar
+          </h2>
+        </div>
+        <div className="col-md-4 text-center"> {/* Adjust column size as needed */}
+          <h2 className="mb-4">{label()}</h2>
+        </div>
+        <div className="col-md-4 text-right"> {/* Adjust column size as needed */}
+          <button className="btn btn-primary mr-2" hidden={readOnly} onClick={() => openAddEventModal(new Date())}>Add Event</button>
+          <button className="btn btn-secondary mr-2" onClick={goToBack}>&#8249; Back</button>
+          <button className="btn btn-primary mr-2" onClick={goToCurrent}>Today</button>
+          <button className="btn btn-secondary" onClick={goToNext}>Next &#8250;</button>
+          <div hidden={readOnly}>
+        
+      </div>
+        </div>
+      </div>
+    </div>
+    );
   };
 
   const modalStyles = {
@@ -241,31 +293,40 @@ const MyCalendar = ({ events, user, group, readOnly, usersInGroup, updateCalenda
 
   return (
     <div>
-      <div hidden={readOnly}>
-        <button
-          className="button btn-primary"
-          onClick={() => openAddEventModal(new Date())} // Pass the current date as an example
-          
-          
-        >
-          Add Event
-        </button>
-      </div>
+    <style>
+  {`
+    .rbc-month-row {
+      display: inline-table !important;
+      height: 50px !important;
+    }
+  `}
+    </style>
+      
 
-    <div style={{ height: 500 }}>
-      <Calendar
-        localizer={localizer}
-        events={calendarEvents}
-        startAccessor="start"
-        endAccessor="end"
-        titleAccessor="title"
-        style={{ color: 'black' }}
-        selectable
-        onSelectSlot={!readOnly ? (slotInfo) => openAddEventModal(slotInfo.start) : null}
-        onSelectEvent={handleEventClick} // Set the event click handler
-        views={['month']}
-        eventPropGetter={handleEventStyleGetter}
-      />
+      <div style={{ height: 500 }}>
+        <Calendar
+          localizer={localizer}
+          events={calendarEvents}
+          startAccessor="start"
+          endAccessor="end"
+          titleAccessor={(event) => (
+            <>
+              <div style={{ fontSize: '14px', textAlign: 'center' }}>{event.type}</div>
+              <div style={{ fontSize: '12px', textAlign: 'left', overflow: 'visible', whiteSpace: 'wrap' }}>{event.title}</div>
+              <div style={{ fontSize: '12px', textAlign: 'left', overflow: 'visible', whiteSpace: 'wrap' }}>{event.description}</div>
+            </>
+          )}
+          style={{ color: 'black' }}
+          selectable
+          onSelectSlot={readOnly ? null : (slotInfo) => openAddEventModal(slotInfo.start)}
+          onSelectEvent={handleEventClick}
+          views={['month' ]}
+          eventPropGetter={handleEventStyleGetter}
+          components={{
+            toolbar: customToolbar,
+          }}
+          popup={true}
+        />
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}

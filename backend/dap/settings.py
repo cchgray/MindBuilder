@@ -29,8 +29,8 @@ SECRET_KEY = config.get('MyAppSettings', 'SECRET_KEY') #"django-insecure-069=v2z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['127.0.0.1']
-ALLOWED_HOSTS = ['3.17.73.203','themindbuilder.org', 'www.themindbuilder.org']
+ALLOWED_HOSTS = ['127.0.0.1']
+#ALLOWED_HOSTS = ['3.17.73.203','themindbuilder.org', 'www.themindbuilder.org']
 
 # Application definition
 
@@ -61,13 +61,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://localhost:8000",  # Adjust this to your npm server's domain
-#     # You can add more allowed origins here if needed
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8000",  # Adjust this to your npm server's domain
+    # You can add more allowed origins here if needed
+]
 
-CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {

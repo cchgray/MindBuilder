@@ -37,14 +37,15 @@ const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEvents
         <div style={{ marginTop: '20px' }}>
             {groupInfo ? (
                 <>
-                <h2>{groupInfo.name} Calendar</h2>
-                <p>{groupInfo.about}</p>
+                {/* <h2>{groupInfo.name} Calendar</h2>
+                <p>{groupInfo.about}</p> */}
 
                 <MyCalendar
                     key={JSON.stringify(calendarEvents)} 
                     events={calendarEvents}
                     user={user}
                     group={groupId}
+                    groupName={groupInfo.name}
                     readOnly={true}
                 />
                 </>

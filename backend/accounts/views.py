@@ -265,7 +265,7 @@ def get_coach_notes(request, coach_id, user_id):
         return Response({'error': 'Notes not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['PUT'])
+@api_view(['PUT']) 
 @permission_classes([IsAuthenticated])
 def update_coach_notes(request, coach_id, user_id):
     try:

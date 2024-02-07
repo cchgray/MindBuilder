@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill'; // Import the ReactQuill component
 import 'react-quill/dist/quill.snow.css'; // Import the styles
 import api from '../actions/api-config';
-import { fetchNotes, updateNotes, removeCoachAssignment, getUsersByCoach } from '../actions/auth'; // Assuming you have a saveNotes action
+import { fetchNotes, updateNotes, removeCoachAssignment } from '../actions/auth'; // Assuming you have a saveNotes action
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 

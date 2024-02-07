@@ -49,7 +49,7 @@ const Navbar = ({ logout, isAuthenticated, userRole }) => {
     return (
         <Fragment>
             <nav className='navbar navbar-expand-lg navbar-light bg-light'>
-                <Link className='navbar-brand' to='/'>Mind Gym</Link>
+                <Link className='navbar-brand' to='/'>Mind Builder</Link>
                 <button 
                     className='navbar-toggler' 
                     type='button' 

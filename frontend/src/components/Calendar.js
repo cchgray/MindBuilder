@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { useParams } from 'react-router-dom';
+import ReactQuill from 'react-quill'; // Import the ReactQuill component
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from 'react-modal'; // Import the react-modal library
@@ -491,6 +493,19 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                 }
               />
             </div>
+            {/* <div className="form-group">
+              <label htmlFor="descriptionTextarea">Description:</label>
+              <ReactQuill
+                theme="snow" 
+                value={eventData.description || ''}
+                onChange={(value) =>
+                  addEventData({
+                    ...eventData,
+                    description: value,
+                  })
+                }
+              />
+            </div> */}
             <button type="submit" className="btn btn-primary mx-2">Add Event</button>
             <button onClick={closeAddEventModal} className="btn btn-secondary mx-2">Close</button>
           </div>

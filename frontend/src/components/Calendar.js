@@ -147,7 +147,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
           setSelectedEventStatus(filteredData[0]);
         }
         else{
-          console.log(response.data);
+          //console.log(response.data);
           if(group){
             setSelectedEventStatus(response.data);
           }
@@ -296,12 +296,16 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
   return (
     <div>
     <style>
-  {`
-    .rbc-month-row {
-      display: inline-table !important;
-      height: 50px !important;
-    }
-  `}
+    {`
+      .rbc-month-row {
+        display: inline-table !important;
+        height: 50px !important;
+      }
+      .ql-container.ql-snow {
+        height: 150px;
+        overflowY: scroll;
+      }
+    `}
     </style>
       
 
@@ -315,7 +319,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
             <>
               <div style={{ fontSize: '14px', textAlign: 'center' }}>{event.type}</div>
               <div style={{ fontSize: '12px', textAlign: 'left', overflow: 'visible', whiteSpace: 'wrap' }}>{event.title}</div>
-              <div style={{ fontSize: '12px', textAlign: 'left', overflow: 'visible', whiteSpace: 'wrap' }}>{event.description}</div>
+              <div style={{ fontSize: '12px', textAlign: 'left', overflow: 'visible', whiteSpace: 'wrap' }} dangerouslySetInnerHTML={{ __html: event.description }} />
             </>
           )}
           style={{ color: 'black' }}
@@ -391,7 +395,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                     </div>
                   )}
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="descriptionTextarea">Description:</label>
                 <textarea
                   className="form-control"
@@ -405,7 +409,34 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                     })
                   }
                 />
+              </div> */}
+              <div className="form-group">
+                <label htmlFor="descriptionTextarea">Description:</label>
+                {readOnly ? (
+                  <div
+                    className="form-control"
+                    style={{ height: "8em", overflowY: "auto" }} // Set a fixed height and enable vertical scrolling
+                    dangerouslySetInnerHTML={{ __html: selectedEvent.description }}
+                  />
+                ) : (
+                  <ReactQuill
+                    theme="snow" 
+                    readOnly={false}
+                    //style={{ height: "10em", overflowY: "auto" }} 
+                    id="descriptionTextarea"
+                    value={selectedEvent.description}
+                    onChange={(value) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        description: value,
+                      })
+                    }
+                  />
+                  
+                )}
               </div>
+
+
               <button type="submit" className="btn btn-primary">
                 Save
               </button>
@@ -479,7 +510,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                 <option value="Goal Setting">Goal Setting</option>
               </select>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="descriptionTextarea">Description:</label>
               <textarea
                 className="form-control"
@@ -492,8 +523,8 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                   })
                 }
               />
-            </div>
-            {/* <div className="form-group">
+            </div> */}
+            <div className="form-group">
               <label htmlFor="descriptionTextarea">Description:</label>
               <ReactQuill
                 theme="snow" 
@@ -505,7 +536,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
                   })
                 }
               />
-            </div> */}
+            </div>
             <button type="submit" className="btn btn-primary mx-2">Add Event</button>
             <button onClick={closeAddEventModal} className="btn btn-secondary mx-2">Close</button>
           </div>

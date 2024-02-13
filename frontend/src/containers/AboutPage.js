@@ -57,6 +57,15 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
 
   return (
     <div className="container mt-4">
+
+    <style>
+    {`
+      .ql-container.ql-snow {
+        height: 150px;
+        overflowY: scroll;
+      }
+    `}
+    </style>
       <h2>About Page</h2>
       {userData ? (
         <div>
@@ -76,7 +85,6 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
           {user.role === 'coach' && (
             <div>
               <ReactQuill
-                style={{ maxHeight: '300px', minHeight: '100px', overflowY: 'auto' }}
                 theme="snow"
                 value={editedNotes}
                 onChange={setEditedNotes}

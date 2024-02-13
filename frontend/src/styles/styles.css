@@ -30,3 +30,7 @@
     opacity: 1; /* Show the tooltip with full opacity */
   }
   
+  .ql-toolbar {
+    position: fixed;
+    top: 0;
+}

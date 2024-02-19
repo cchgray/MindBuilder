@@ -113,7 +113,7 @@ const getDesignTokens = (mode) => ({
     },
     divider: mode === 'dark' ? alpha(gray[600], 0.3) : alpha(gray[300], 0.5),
     background: {
-      default: '#fff',
+      default: '#F3F7F4',
       paper: gray[50],
       ...(mode === 'dark' && { default: gray[900], paper: gray[800] }),
     },

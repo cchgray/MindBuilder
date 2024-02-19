@@ -44,7 +44,7 @@ const Navbar = ({ logout, isAuthenticated, userRole }) => {
 
     return (
         <Fragment>
-            <nav className='navbar navbar-expand-lg navbar-light bg-light'>
+            <nav className='navbar navbar-expand-lg navbar-light' style={{ backgroundColor: '#B7D9F1' }}>
                 <Link className='navbar-brand' to='/'>Mind Builder</Link>
                 <button 
                     className='navbar-toggler' 

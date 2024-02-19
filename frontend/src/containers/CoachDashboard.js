@@ -4,6 +4,11 @@ import { getUsersByCoach, loadCalendarEventsByUser, clearCalendarEvents, getGrou
 import MyCalendar from '../components/Calendar'; // Import your Calendar component
 import { Link } from 'react-router-dom';
 import api from '../actions/api-config';
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
 
 const CoachDashboard = ({ coachId, user, usersByCoach, 
     getUsersByCoach, loadCalendarEventsByUser, calendarEvents, clearCalendarEvents, 
@@ -79,8 +84,12 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
     };
 
     return (
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
         <div className="container">
-            <h2 className="mt-4">{user.first_name} {user.last_name}'s Dashboard</h2>
+            <h2 className="mt-4">{user && user.first_name} {user && user.last_name}'s Dashboard</h2>
         <div className="row">
           <div className="col-md-4">
             <div className="mt-4">
@@ -167,6 +176,7 @@ const CoachDashboard = ({ coachId, user, usersByCoach,
                 </div>
             )}
         </div>
+    </ThemeProvider>
     );
 };
 

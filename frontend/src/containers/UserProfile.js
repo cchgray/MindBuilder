@@ -5,6 +5,14 @@ import MyCalendar from '../components/Calendar';
 import { Link } from 'react-router-dom';
 import api from '../actions/api-config';
 
+
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const UserProfile = ({ user, calendarEvents, load_user, loadCalendarEventsByUser, getGroupsAssignedToUser, groupsAssignedToUser }) => {
   useEffect(() => {
     load_user();
@@ -97,6 +105,10 @@ const UserProfile = ({ user, calendarEvents, load_user, loadCalendarEventsByUser
 
 
   return (
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
     
     <div className='container mt-5'>
       {/* ...other user information */}
@@ -131,6 +143,7 @@ const UserProfile = ({ user, calendarEvents, load_user, loadCalendarEventsByUser
         </div>
 
     </div>
+    </ThemeProvider>
   );
 };
 

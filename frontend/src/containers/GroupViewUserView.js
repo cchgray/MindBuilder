@@ -5,6 +5,12 @@ import { load_user,
       fetchGroupInfo, loadCalendarEventsByGroup, clearCalendarEvents } from '../actions/auth';
 import MyCalendar from '../components/Calendar';
 
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup, 
      fetchGroupInfo, groupInfo }) => {
  
@@ -30,6 +36,11 @@ const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEvents
   
 
   return (
+
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
     <div className='container mt-5'>
       {/* ...other user information */}
       
@@ -55,6 +66,7 @@ const GroupViewUserView = ({ user, calendarEvents, load_user, loadCalendarEvents
             </div>
 
     </div>
+    </ThemeProvider>
   );
 };
 

@@ -3,6 +3,13 @@ import { Navigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { verify } from '../actions/auth';
 
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const Activate = ({ verify, match }) => {
     const [verified, setVerified] = useState(false);
 
@@ -19,6 +26,10 @@ const Activate = ({ verify, match }) => {
     }
 
     return (
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
         <div className='container'>
             <div 
                 className='d-flex flex-column justify-content-center align-items-center'
@@ -35,6 +46,7 @@ const Activate = ({ verify, match }) => {
                 </button>
             </div>
         </div>
+    </ThemeProvider>
     );
 };
 

@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
-//import axios from 'axios';
+
+
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
 
 const Signup = ({ signup, isAuthenticated }) => {
     const [accountCreated, setAccountCreated] = useState(false);
@@ -43,6 +50,10 @@ const Signup = ({ signup, isAuthenticated }) => {
     }
 
     return (
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
         <div className='container mt-5'>
             <h1>Sign Up</h1>
             <p>Create your Account</p>
@@ -152,6 +163,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                 Already have an account? <Link to='/login'>Sign In</Link>
             </p>
         </div>
+        </ThemeProvider>
     );
 };
 

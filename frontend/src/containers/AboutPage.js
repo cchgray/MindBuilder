@@ -7,6 +7,13 @@ import { fetchNotes, updateNotes, removeCoachAssignment } from '../actions/auth'
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignment, user }) => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
@@ -22,7 +29,7 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
           },
         });
         setUserData(userResponse.data);
-        if (user.role === 'coach') {
+        if (user && user.role === 'coach') {
           fetchNotes(coachId, userId);
           setEditedNotes(notes);
         }
@@ -56,6 +63,11 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
 
 
   return (
+
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
     <div className="container mt-4">
 
     <style>
@@ -105,6 +117,7 @@ const AboutPage = ({ coachId, fetchNotes, notes, updateNotes, removeCoachAssignm
         <p>Loading user data...</p>
       )}
     </div>
+    </ThemeProvider>
   );
 };
 

@@ -3,6 +3,13 @@ import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reset_password } from '../actions/auth';
 
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const ResetPassword = ({ reset_password }) => {
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useState({
@@ -25,6 +32,11 @@ const ResetPassword = ({ reset_password }) => {
     } 
 
     return (
+
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
         <div className='container mt-5'>
             <h1>Request Password Reset:</h1>
             <form onSubmit={e => onSubmit(e)}>
@@ -42,6 +54,7 @@ const ResetPassword = ({ reset_password }) => {
                 <button className='btn btn-primary' type='submit'>Reset Password</button>
             </form>
         </div>
+    </ThemeProvider>
     );
 };
 

@@ -3,6 +3,12 @@ import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions/auth';
 
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
     const [formData, setFormData] = useState({
         email: '',
@@ -44,6 +50,11 @@ const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
     }
 
     return (
+
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
         <div className='container mt-5'>
             <h1>Sign In</h1>
             {renderError()}
@@ -88,6 +99,7 @@ const Login = ({ login, isAuthenticated, userRole, failedLogin }) => {
                 Forgot your Password? <Link to='/reset-password'>Reset Password</Link>
             </p>
         </div>
+    </ThemeProvider>
     );
 };
 

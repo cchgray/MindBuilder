@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill'; // Import the ReactQuill component
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -9,6 +8,11 @@ import { updateCalendarEvent, addCalendarEvent, deleteCalendarEvent,
   updateUserEventStatus, addUserEventStatus, deleteUserEventStatus, addGroupCalendarEvent } from '../actions/auth';
 import { connect } from 'react-redux';
 import api from '../actions/api-config';
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
 
 const localizer = momentLocalizer(moment);
 
@@ -260,7 +264,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
       <div className="row align-items-center">
       <div className="col-md-4 align-self-center"> {/* Adjust column size as needed */}
           <h2 className="mb-4">
-            {group ? `${groupName}`: `${user.first_name} ${user.last_name}`}'s Calendar
+            {group ? `${groupName}`: `${user && user.first_name} ${user && user.last_name}`}'s Calendar
           </h2>
         </div>
         <div className="col-md-4 text-center"> {/* Adjust column size as needed */}
@@ -309,6 +313,9 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
     </style>
       
 
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
       <div style={{ height: 500 }}>
         <Calendar
           localizer={localizer}
@@ -545,6 +552,7 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
       </Modal>
 
     </div>
+        </ThemeProvider>
         </div>
   );
 };

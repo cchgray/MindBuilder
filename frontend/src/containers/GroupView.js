@@ -6,6 +6,13 @@ import { load_user, getUsersByCoach, loadUsersInGroup,
 import MyCalendar from '../components/Calendar';
 import { Navigate } from 'react-router-dom';
 
+
+import getLPTheme from '../containers/LandingPage/getLPTheme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const LPtheme = createTheme(getLPTheme('light'));
+
 const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup, 
     getUsersByCoach, loadUsersInGroup, addUserToGroup, removeUserFromGroup, 
     usersByCoach, usersInGroup, fetchGroupInfo, groupInfo, deleteGroup }) => {
@@ -80,7 +87,13 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
     return <Navigate to='/coach-dashboard' />
   }
 
-  return ( <div className="container mt-5">
+  return ( 
+  
+
+    <ThemeProvider theme={LPtheme}>
+
+    <CssBaseline />
+  <div className="container mt-5">
   {/* ...other user information */}
   <div>
   <div className="container mt-4">
@@ -175,6 +188,7 @@ const GroupView = ({ user, calendarEvents, load_user, loadCalendarEventsByGroup,
       )}
   </div>
 </div>
+</ThemeProvider>  
   );
 };
 

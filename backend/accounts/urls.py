@@ -43,6 +43,6 @@ urlpatterns = [
     path('create-invitation/', create_invitation, name='create_invitation'),
     path('check-invitation/', check_invitation, name='check_invitation'),
     path('accept-invitation/', accept_invitation, name='accept_invitation'),
-
+ 
 
 ]

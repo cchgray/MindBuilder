@@ -372,3 +372,5 @@ def accept_invitation(request):
         return Response({'status': 'success', 'message': 'Invitation accepted successfully'})
     except Invitation.DoesNotExist:
         return Response({'status': 'error', 'message': 'Invitation not found or not pending'})
+    
+    #pull pending invitation by coach

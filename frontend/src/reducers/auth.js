@@ -68,6 +68,7 @@ const initialState = {
     failedLogin: false,
 };
 
+
 export default function(state = initialState, action) {
     const { type, payload } = action;
 

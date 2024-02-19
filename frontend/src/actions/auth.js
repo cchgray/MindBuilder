@@ -50,7 +50,7 @@ import {
 
 } from './types';
 
-
+ 
 export const invitationCheck = async (email) => {
     try {
         const config = {

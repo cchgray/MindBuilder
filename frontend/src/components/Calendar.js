@@ -213,12 +213,12 @@ const MyCalendar = ({ events, user, group, groupName, readOnly, usersInGroup, up
   
   const handleEventStyleGetter = (event) => {
     const typeColorMap = {
-      'Breathing': 'blue',
-      'Focus/Concentration': 'green',
-      'Stress Management': 'orange',
-      'Reflection': 'brown',
-      'Imagery/Visualization': 'red',
-      'Goal Setting': 'purple',
+      'Breathing': '#82C5CE',
+      'Focus/Concentration': '#2AB77C',
+      'Stress Management': '#BDBB4D',
+      'Reflection': '#EF5B5B',
+      'Imagery/Visualization': '#FF9F1C',
+      'Goal Setting': '#9D79BC',
     };
 
     

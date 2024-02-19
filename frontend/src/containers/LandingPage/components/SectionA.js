@@ -77,7 +77,7 @@ export default function SectionA() {
                   p: 3,
                   height: 'fit-content',
                   width: '100%',
-                  background: 'none',
+                  background: '#E2E7E4',
                 }}
               >
                 <Box

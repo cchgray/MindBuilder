@@ -11,7 +11,7 @@ export default function SectionB() {
       <Typography component="h2" variant="h4" color="text.primary" p={2} gutterBottom>Features</Typography>
       <Grid container spacing={3} alignItems="stretch">
         <Grid item xs={12}>
-          <Card>
+          <Card sx={{ backgroundColor: '#E2E7E4' }}>
             <Grid container direction="column" p={2}>
               {/* Top section */}
               <Grid item>
@@ -74,7 +74,7 @@ export default function SectionB() {
         </Grid>
         
         <Grid item xs={12} > 
-          <Card>
+          <Card sx={{ backgroundColor: '#E2E7E4' }}>
             <Grid container direction="column" p={2}>
                   {/* Top section */}
                   <Typography variant="h4" gutterBottom>
@@ -130,7 +130,7 @@ export default function SectionB() {
         </Grid> 
 
         <Grid item xs={12}>
-          <Card>
+          <Card sx={{ backgroundColor: '#E2E7E4' }}>
             <Grid container direction="column" p={2}>
               {/* Top section */}
               <Grid item>

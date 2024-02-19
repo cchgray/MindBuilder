@@ -44,6 +44,9 @@ const Navbar = ({ logout, isAuthenticated, userRole }) => {
 
     return (
         <Fragment>
+        <div style={{ backgroundColor: 'pink', padding: '10px', textAlign: 'center', color: 'white' }}>
+            This website is under development. Please email cchgray@gmail.com with any bugs or suggestions.
+        </div>
             <nav className='navbar navbar-expand-lg navbar-light' style={{ backgroundColor: '#B7D9F1' }}>
                 <Link className='navbar-brand' to='/'>Mind Builder</Link>
                 <button 

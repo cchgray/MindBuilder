@@ -24,13 +24,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('MyAppSettings', 'SECRET_KEY') #"django-insecure-069=v2z9-o=x*2t)=49*nfj_9n*(edtq^0^9-z%+vo8r#1kwm6"
+SECRET_KEY = config.get('MyAppSettings', 'SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
-#ALLOWED_HOSTS = ['3.17.73.203','themindbuilder.org', 'www.themindbuilder.org']
+#ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['3.17.73.203','themindbuilder.org', 'www.themindbuilder.org']
 
 # Application definition
 
@@ -62,8 +62,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8000",  # Adjust this to your npm server's domain
+    #"http://localhost:3000",
+    #"http://localhost:8000", 
+    "http://3.17.73.203:8000",
+    "http://themindbuilder.org:8000",
+    "http://www.themindbuilder.org:8000", # Adjust this to your npm server's domain
     # You can add more allowed origins here if needed
 ]
 
